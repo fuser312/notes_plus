@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:notes_plus/modules/all_notes_cubit.dart';
 import 'package:notes_plus/modules/notes_class.dart';
+import 'package:notes_plus/screens/notes_editing_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,7 +10,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  AllNotesCubit allNotes=AllNotesCubit(new AllNotes());
+  AllNotesCubit allNotes = AllNotesCubit(new AllNotes());
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -26,15 +28,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: state.list.length,
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
-                    title: Text("A New Note "),
-                    subtitle:
-                    Text(state.list[index].createdOn.toLocal().toString()),
+                    title: Text(state.list[index].title),
+                    subtitle: Text(state.list[index].noteText),
+                    isThreeLine: true,
+                    onTap: () async {
+                      Note result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              EditingNotes(currNote: state.list[index]),
+                        ),
+                      );
+                      print("result is ${result.runtimeType}");
+                      print("result is $result");
+                      context.bloc<AllNotesCubit>().updateNote(
+                            index,
+                            result,
+                          );
+                      state.list[index] = result;
+//                      print("result is $result");
+                    },
                   );
                 }),
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.add_circle),
-              onPressed: () =>
-                  context.bloc<AllNotesCubit>().addNote(new Note(noteText: "hello")),
+              onPressed: () => context.bloc<AllNotesCubit>().addNote(
+                    new Note(noteText: "hello"),
+                  ),
             ),
           );
         },
@@ -42,5 +62,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-

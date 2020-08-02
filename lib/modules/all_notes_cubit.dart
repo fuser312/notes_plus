@@ -9,8 +9,7 @@ class AllNotesCubit extends Cubit<AllNotes> {
     emit(new AllNotes(allNotes: newList));
   }
   void updateNote(int index, Note newNote) {
-    state.updateNote(index, newNote);
-    List<Note> newList =state.list;
+    List<Note> newList= state.updateNote(index, newNote);
     emit(new AllNotes(allNotes: newList));
   }
 
