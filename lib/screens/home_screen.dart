@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return ListTile(
                     title: Text(state.list[index].title),
-                    subtitle: Text(state.list[index].noteText),
+                    subtitle: Text(state.list[index].noteText.substring(0)),
                     isThreeLine: true,
                     onTap: () async {
                       Note result = await Navigator.push(

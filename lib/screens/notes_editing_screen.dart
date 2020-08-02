@@ -31,18 +31,32 @@ class _EditingNotesState extends State<EditingNotes> {
     return WillPopScope(
       child: Scaffold(
         appBar: AppBar(
-            title: Text(currNote.title),
-            leading: IconButton(icon: Icon(Icons.chevron_left),
-              onPressed: () => Navigator.pop(context, currNote),)
+          title: Text(currNote.title),
+          leading: IconButton(
+            icon: Icon(Icons.chevron_left),
+            onPressed: () => Navigator.pop(context, currNote),
+          ),
         ),
-        body: TextField(
-          onChanged: (val) {
-            currNote.noteText = val;
-            currNote.updateNote(val);
-          },
-          controller: noteTextController,
-
+        body: Container(
+          margin: EdgeInsets.all(20.0),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "Insert your message",
+            ),
+            scrollPadding: EdgeInsets.all(20.0),
+            keyboardType: TextInputType.multiline,
+//          expands: true,
+            maxLengthEnforced: true,
+            maxLines: 99999,
+            autofocus: true,
+            onChanged: (val) {
+              currNote.noteText = val;
+              currNote.updateNote(val);
+            },
+            controller: noteTextController,
+          ),
         ),
+        resizeToAvoidBottomPadding: true,
       ),
       onWillPop: () async {
         Navigator.pop(context, currNote);
